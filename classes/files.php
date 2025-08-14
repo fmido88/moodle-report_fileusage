@@ -31,9 +31,17 @@ class files {
      * @return bool|string
      */
     public static function get_pluginfile_relativepath() {
-        if (!$relativepath = get_file_argument()) {
-            return false;
+        try {
+            if (!$relativepath = get_file_argument()) {
+                return false;
+            }
+        } catch (\Throwable $e) {
+            if ($e instanceof \coding_exception) {
+                return false;
+            }
+            throw $e;
         }
+
         if (!self::is_pluginfile_script()) {
             return false;
         }
